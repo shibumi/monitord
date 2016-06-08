@@ -51,8 +51,7 @@ char* datetime(){
 }
 
 char* disk_space(){
-        unsigned long total, used, blocksize, free;
-        unsigned long usedP;
+        unsigned long total, used, blocksize, free, used_perc;
         struct statvfs vfs;
         char* buffer = malloc(FILE_PATH_SIZE);
 
@@ -64,9 +63,8 @@ char* disk_space(){
                 free = (vfs.f_bfree * blocksize);
                 used = ceil((double)(total - free) / MAGIC_NUMBER);
                 total = ceil((double)(total) / MAGIC_NUMBER);
-                usedP = (used / total) * 100;
-                printf("%lu\n", usedP);
-                printf("D: %lu / %lu\n", used, total);
+                used_perc = 100 * used / total + ((100 * used) % total != 0);
+                printf("D: %lu / %lu : %lu%\n", used, total, used_perc);
         }
         return "";
 }
